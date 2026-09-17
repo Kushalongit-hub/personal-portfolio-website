@@ -21,7 +21,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cyber-Brutalist Portfolio",
+  title: "Kushal",
   description: "Personal portfolio with cyber-brutalist aesthetic",
 };
 
