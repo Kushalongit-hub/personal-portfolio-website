@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReticleOverlay from "@/components/ReticleOverlay";
 import TerminalWindow from "@/components/TerminalWindow";
@@ -8,13 +8,87 @@ import InteractiveBadge from "@/components/InteractiveBadge";
 import BlackHoleVideo from "@/components/BlackHoleVideo";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 
+const ResearchView = () => {
+  return (
+    <div className="w-full bg-blueprint-grid flex flex-col items-center pt-20 pb-40">
+      <div className="w-full max-w-7xl px-6 mb-24 flex flex-col items-center text-center relative z-20">
+        <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
+          -- SYSTEM.ACCESS_RESEARCH
+        </p>
+        <h1 className="text-5xl md:text-7xl font-pixel text-black tracking-widest uppercase">
+          Research
+        </h1>
+        <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
+      </div>
+
+      <div className="w-full max-w-7xl relative z-10">
+        <TerminalWindow title="research" subtitle="node" variant="white">
+          <div className="space-y-6 text-sm leading-relaxed">
+            <p>
+              Research streams are still compiling. This section is currently under development as I continue exploring ML/AI systems, RAG pipelines, and applied computer vision. New findings will be published here as they are validated and documented.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InteractiveBadge href="https://github.com/Kushalongit-hub" variant="gray">
+                GITHUB
+              </InteractiveBadge>
+              <InteractiveBadge href="https://www.linkedin.com/in/kushal-m-anvekar/" variant="gray">
+                LINKEDIN
+              </InteractiveBadge>
+            </div>
+          </div>
+        </TerminalWindow>
+      </div>
+    </div>
+  );
+};
+
+const ContactView = () => {
+  return (
+    <div className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center overflow-y-auto">
+      <div className="w-full max-w-7xl px-6 pt-20 pb-40 flex flex-col items-center text-center relative z-20">
+        <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
+          -- SYSTEM.INITIATE_CONTACT
+        </p>
+        <h1 className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
+          Contact
+        </h1>
+        <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
+      </div>
+
+      <div className="w-full max-w-7xl relative z-10">
+        <TerminalWindow title="contact" subtitle="protocol" variant="windows">
+          <div className="space-y-6 text-sm leading-relaxed">
+            <p>
+              Transmissions are monitored. Use the channels below to establish a secure connection.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InteractiveBadge href="https://www.linkedin.com/in/kushal-m-anvekar/" variant="gray">
+                LINKEDIN
+              </InteractiveBadge>
+              <InteractiveBadge href="https://github.com/Kushalongit-hub" variant="gray">
+                GITHUB
+              </InteractiveBadge>
+              <InteractiveBadge href="mailto:kushalonmsrit@gmail.com" variant="gray">
+                EMAIL
+              </InteractiveBadge>
+              <InteractiveBadge href="/Kushal_Anvekar_Resume.pdf" target="_blank" rel="noopener noreferrer" variant="gray">
+                RESUME PDF
+              </InteractiveBadge>
+            </div>
+          </div>
+        </TerminalWindow>
+      </div>
+    </div>
+  );
+};
+
 const MacbookShowcaseView = () => {
   return (
     <div className="w-full bg-[#0a0a0a] flex flex-col items-center pt-20 pb-40">
       {/* Master Page Header */}
       <div className="w-full max-w-7xl px-6 mb-24 flex flex-col items-center text-center relative z-20">
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
-          // SYSTEM.DIRECTORY.ACCESS
+          -- SYSTEM.DIRECTORY.ACCESS
         </p>
         <h1 className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
           Projects
@@ -68,7 +142,7 @@ const MacbookShowcaseView = () => {
           <TerminalWindow title="vakil_ai" subtitle="readme" variant="windows">
             <div className="space-y-3 text-sm leading-relaxed">
               <p>
-                Vakil AI - India's First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).
+                Vakil AI - India&apos;s First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).
               </p>
               <div>
                 <InteractiveBadge href="https://github.com/Kushalongit-hub/Vakil-ai" variant="gray">GITHUB</InteractiveBadge>
@@ -95,27 +169,50 @@ const MacbookShowcaseView = () => {
 
 export default function Home() {
   const [activeView, setActiveView] = useState("hero");
+  const isTransitioning = useRef(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isTransitioning.current) return;
+
       if (e.key === "ArrowDown") {
         e.preventDefault();
         if (activeView === "hero") {
+          isTransitioning.current = true;
           setActiveView("projects");
           setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
         } else if (activeView === "projects") {
-          const maxScroll = document.body.offsetHeight - window.innerHeight;
-          if (window.scrollY >= maxScroll - 10) return;
-          window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" });
+          isTransitioning.current = true;
+          setActiveView("research");
+          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
+        } else if (activeView === "research") {
+          isTransitioning.current = true;
+          setActiveView("contact");
+          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
         }
       }
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (activeView === "projects" && window.scrollY > 100) {
+        if (activeView === "contact") {
+          isTransitioning.current = true;
+          setActiveView("research");
+          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
+        } else if (activeView === "research") {
+          isTransitioning.current = true;
+          setActiveView("projects");
+          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
+        } else if (activeView === "projects" && window.scrollY > 100) {
           window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
         } else {
+          isTransitioning.current = true;
           setActiveView("hero");
           setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
+          setTimeout(() => { isTransitioning.current = false; }, 400);
         }
       }
     };
@@ -129,23 +226,46 @@ export default function Home() {
   }, [activeView]);
 
   useEffect(() => {
-    let ticking = false;
-
     const handleWheel = (e: WheelEvent) => {
-      if (ticking) return;
-      ticking = true;
+      if (isTransitioning.current) return;
 
       if (e.deltaY > 0 && activeView === "hero" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
         setActiveView("projects");
         setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
+      } else if (e.deltaY > 0 && activeView === "projects" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
+        setActiveView("research");
+        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
+      } else if (e.deltaY > 0 && activeView === "research" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
+        setActiveView("contact");
+        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
+      } else if (e.deltaY < 0 && activeView === "contact" && window.scrollY <= 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
+        setActiveView("research");
+        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
+      } else if (e.deltaY < 0 && activeView === "research" && window.scrollY <= 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
+        setActiveView("projects");
+        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
       } else if (e.deltaY < 0 && activeView === "projects" && window.scrollY <= 10) {
+        e.preventDefault();
+        isTransitioning.current = true;
         setActiveView("hero");
         setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
+        setTimeout(() => { isTransitioning.current = false; }, 400);
       }
-
-      setTimeout(() => {
-        ticking = false;
-      }, 800);
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
@@ -174,7 +294,9 @@ export default function Home() {
                 <InteractiveBadge href="https://github.com/Kushalongit-hub">
                   GITHUB
                 </InteractiveBadge>
-                <InteractiveBadge href="#research">RESEARCH</InteractiveBadge>
+                <InteractiveBadge href="#research" variant="gray" onClick={() => setActiveView("research")}>
+                  RESEARCH
+                </InteractiveBadge>
                 <InteractiveBadge href="/Kushal_Anvekar_Resume.pdf" target="_blank" rel="noopener noreferrer">
                   RESUME PDF
                 </InteractiveBadge>
@@ -184,8 +306,10 @@ export default function Home() {
             <section className="relative mx-auto max-w-6xl px-6 py-24">
               <div className="grid grid-cols-1 gap-12 md:grid-cols-2 items-center">
                 <div>
-                  <h1 className="text-5xl font-black uppercase leading-none tracking-tight break-words md:text-7xl">
-                    KUSHAL M
+                  <h1 className="text-4xl font-pixel uppercase leading-none tracking-widest break-words md:text-6xl">
+                    KUSHAL 
+                    <br />
+                    M
                     <br />
                     ANVEKAR
                   </h1>
@@ -281,6 +405,42 @@ export default function Home() {
             className="w-full min-h-screen relative z-10"
           >
             <MacbookShowcaseView />
+            <div className="w-full max-w-7xl relative z-10 mt-12">
+              <div className="flex justify-center gap-3">
+                <InteractiveBadge href="#" variant="gray" onClick={() => setActiveView("research")}>
+                  RESEARCH
+                </InteractiveBadge>
+                <InteractiveBadge href="#" variant="gray" onClick={() => setActiveView("contact")}>
+                  CONTACT
+                </InteractiveBadge>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {activeView === "research" && (
+          <motion.div
+            key="research-view"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="w-full min-h-screen relative z-10"
+          >
+            <ResearchView />
+          </motion.div>
+        )}
+
+        {activeView === "contact" && (
+          <motion.div
+            key="contact-view"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="w-full min-h-screen relative z-10"
+          >
+            <ContactView />
           </motion.div>
         )}
       </AnimatePresence>
