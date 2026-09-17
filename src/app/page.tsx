@@ -23,7 +23,7 @@ const MacbookShowcaseView = () => {
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
       </div>
 
-      <div className="w-full max-w-7xl mb-96">
+      <div className="w-full max-w-7xl mb-[36vh]">
         <MacbookScroll
           title={
             <span className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
@@ -51,7 +51,7 @@ const MacbookShowcaseView = () => {
 
       <div className="h-[40vh] w-full" />
 
-      <div className="w-full max-w-7xl mb-96">
+      <div className="w-full max-w-7xl mb-[32vh]">
         <MacbookScroll
           title={
             <span className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
@@ -65,17 +65,30 @@ const MacbookShowcaseView = () => {
       </div>
 
       <div className="w-full max-w-7xl relative z-10">
-        <TerminalWindow title="vakil_ai" subtitle="readme" variant="windows">
-          <div className="space-y-3 text-sm leading-relaxed">
-            <p>
-              Vakil AI - India's First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).
-            </p>
-            <div>
-              <InteractiveBadge href="https://github.com/Kushalongit-hub/Vakil-ai" variant="gray">GITHUB</InteractiveBadge>
+          <TerminalWindow title="vakil_ai" subtitle="readme" variant="windows">
+            <div className="space-y-3 text-sm leading-relaxed">
+              <p>
+                Vakil AI - India's First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).
+              </p>
+              <div>
+                <InteractiveBadge href="https://github.com/Kushalongit-hub/Vakil-ai" variant="gray">GITHUB</InteractiveBadge>
+              </div>
             </div>
+          </TerminalWindow>
+
+          <div className="mt-12 w-full max-w-7xl relative z-10">
+            <TerminalWindow title="github" subtitle="projects" variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <p>
+                  Explore more projects, experiments, and open-source contributions on GitHub.
+                </p>
+                <div>
+                  <InteractiveBadge href="https://github.com/Kushalongit-hub" variant="gray">GITHUB</InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
           </div>
-        </TerminalWindow>
-      </div>
+        </div>
     </div>
   );
 };
