@@ -36,7 +36,7 @@ const MacbookShowcaseView = () => {
         />
       </div>
 
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl relative z-10">
         <TerminalWindow title="try_on" subtitle="readme" variant="windows">
           <div className="space-y-3 text-sm leading-relaxed">
             <p>
@@ -64,7 +64,7 @@ const MacbookShowcaseView = () => {
         />
       </div>
 
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl relative z-10">
         <TerminalWindow title="vakil_ai" subtitle="readme" variant="windows">
           <div className="space-y-3 text-sm leading-relaxed">
             <p>
