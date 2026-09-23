@@ -46,6 +46,21 @@
   }
 }
 
+@keyframes scale {
+  to {
+    scale: 0.9;
+  }
+}
+
+@keyframes discard {
+  to {
+    margin-top: calc(-1 * var(--card-margin));
+    opacity: 0;
+    padding-top: 0;
+    scale: 0.78;
+  }
+}
+
 body {
   background: var(--color-brand-terminal);
   color: var(--color-brand-black);
@@ -69,6 +84,62 @@ body::before {
     linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
   background-size: 50px 50px;
+}
+
+.wrapper {
+  --cards-amount: 4;
+  --rolling-count: 4;
+  --card-height: 300px;
+  --card-margin: 0px;
+  --cards-gap: 28px;
+  --card-top-distance: 32px;
+  --card-top-offset: 20px;
+  --block-size: calc(
+    var(--cards-amount) * (var(--card-height) + var(--card-top-offset)) +
+      (var(--cards-amount) - 1) * var(--cards-gap)
+  );
+  display: grid;
+  gap: var(--cards-gap);
+  grid-template-rows: repeat(var(--cards-amount), var(--card-height));
+  padding-bottom: calc(var(--cards-amount) * var(--card-top-offset));
+  view-timeline-name: --cards-scrolling;
+}
+
+.card {
+  --start-range: calc(
+    (var(--index0) + var(--rolling-count) - 1) *
+      (var(--card-height) + var(--card-margin)) / var(--block-size) * 100%
+  );
+  --end-range: calc(
+    (var(--index0) + var(--rolling-count)) *
+      (var(--card-height) + var(--card-margin)) / var(--block-size) * 100%
+  );
+  position: sticky;
+  top: 0;
+  padding-top: calc(
+    var(--card-top-distance) + var(--index0) * var(--card-top-offset)
+  );
+  transform-origin: center 200%;
+  animation: discard linear forwards;
+  animation-timeline: --cards-scrolling;
+  animation-range: exit-crossing var(--start-range) exit-crossing
+    var(--end-range);
+}
+
+.layer {
+  --start-range: calc(
+    (var(--index0) + var(--depth0)) *
+      (var(--card-height) + var(--card-margin)) / var(--block-size) * 100%
+  );
+  --end-range: calc(
+    (var(--index0) + var(--depth0) + 1) *
+      (var(--card-height) + var(--card-margin)) / var(--block-size) * 100%
+  );
+  transform-origin: 50% 0%;
+  animation: scale linear forwards;
+  animation-timeline: --cards-scrolling;
+  animation-range: exit-crossing var(--start-range) exit-crossing
+    var(--end-range);
 }
 
 ::selection {

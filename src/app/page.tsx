@@ -16,7 +16,7 @@ const ResearchView = ({ isDark, onNavigate }: { isDark: boolean; onNavigate: (vi
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.ACCESS_RESEARCH
         </p>
-        <h1 className={`text-4xl md:text-6xl font-pixel tracking-widest uppercase ${isDark ? "text-white" : "text-black"}`}>
+        <h1 className={`text-4xl md:text-6xl font-pixel tracking-widest uppercase ${isDark ? "text-black" : "text-white"}`}>
           Research
         </h1>
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
@@ -105,40 +105,6 @@ const ContactView = ({ onNavigate }: { onNavigate: (view: string) => void }) => 
 
 const TechStackView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
   const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const handleScroll = () => {
-      const rect = track.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const trackTop = rect.top;
-      const trackHeight = rect.height;
-
-      const scrolledIntoView = viewportHeight - trackTop;
-      const scrollableDistance = trackHeight - viewportHeight;
-      const progress = Math.max(0, Math.min(1, scrolledIntoView / scrollableDistance));
-
-      const cards = track.querySelectorAll('[data-card]');
-      cards.forEach((card, index) => {
-        const el = card as HTMLElement;
-        const direction = index % 2 === 0 ? 1 : -1;
-        const rotation = direction * (progress * 12);
-        const translateX = direction * (progress * 140);
-        const scale = 1 - progress * 0.05;
-        const opacity = 1 - progress * 0.15;
-        el.style.transform = `translate(-50%, -50%) translateX(${translateX}px) rotate(${rotation}deg) scale(${scale})`;
-        el.style.opacity = opacity.toString();
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const cards = [
     { title: "Data Structures & Algorithms", accent: "border-[#ff5f56]" },
     { title: "Software Architecture", accent: "border-[#ffbd2e]" },
@@ -146,108 +112,152 @@ const TechStackView = ({ onNavigate }: { onNavigate: (view: string) => void }) =
     { title: "Digital Signal Processing", accent: "border-[var(--bg-accent)]" },
   ];
 
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const handleScroll = () => {
+      const cards = [...track.querySelectorAll('.card')];
+      const discarded = cards.filter((card) => {
+        const scale = getComputedStyle(card).scale;
+        return scale !== 'none' && parseFloat(scale) < 1;
+      });
+      const last = discarded.at(-1);
+      const ratio = last
+        ? 1 - (parseFloat(getComputedStyle(last).scale) - 0.78) / 0.22
+        : 0;
+      const shift = Math.max(discarded.length - 1, 0) + ratio;
+      cards.forEach((card) => {
+        const index = parseFloat((card as HTMLElement).style.getPropertyValue('--index0') || '0');
+        (card as HTMLElement).style.paddingTop = `calc(var(--card-top-distance) + (${index} - ${shift}) * var(--card-top-offset))`;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const renderContent = (card: typeof cards[0], index: number) => (
+    <div className="content">
+      <div className="w-full max-w-2xl mx-auto px-6 border-2 border-[#333] bg-[#0a0a0a] rounded-xl p-6 shadow-brutal-lg">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="h-3 w-3 rounded-full bg-[var(--bg-accent)]" />
+          <h2 className="text-xl md:text-2xl font-pixel text-white tracking-widest uppercase">
+            {card.title}
+          </h2>
+        </div>
+        <div className="w-12 h-1 bg-[var(--bg-accent)] mb-6" />
+
+        {index === 0 && (
+          <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">AI, Machine Learning & Inference</p>
+              <p>Frameworks & Architectures: PyTorch (LSTM, Neural Networks), Local RAG architectures, and LangGraph.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Tools & Platforms</p>
+              <p>Nvidia NIM, Google AI Studio, Claude, and Gemini.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Techniques</p>
+              <p>Prompt Engineering and Quantized deployment (Llama, Qwen 3).</p>
+            </div>
+          </div>
+        )}
+
+        {index === 1 && (
+          <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Cloud Hosting & Environments</p>
+              <p>Google Cloud Platform (GCP), Vercel, and Bare-metal deployment.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Containerization & CI/CD</p>
+              <p>Docker and GitHub Actions/Codespaces.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Operating Systems</p>
+              <p>Linux (custom kernels, CachyOS) and WSL.</p>
+            </div>
+          </div>
+        )}
+
+        {index === 2 && (
+          <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Core Languages</p>
+              <p>Python, Java, JavaScript/TypeScript, and Rust.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Basic Knowledge</p>
+              <p>Go.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Frameworks</p>
+              <p>React and Three.js.</p>
+            </div>
+          </div>
+        )}
+
+        {index === 3 && (
+          <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Databases</p>
+              <p>Supabase and SQL.</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Workflow Automation</p>
+              <p>n8n Workflow Automation.</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <div className="w-full min-h-screen relative z-10 bg-blueprint-grid">
+    <div className="w-full min-h-screen relative z-10 bg-blueprint-grid pb-[25vh]">
       <div className="w-full max-w-7xl px-6 mb-12 flex flex-col items-center text-center relative z-20">
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.STACK.CORE
         </p>
-        <h1 className="text-4xl md:text-6xl font-pixel text-white tracking-widest uppercase">
+        <h1 className="text-4xl md:text-6xl font-pixel text-black tracking-widest uppercase">
           Tech Stack
         </h1>
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
       </div>
 
-      {/* Scroll Track */}
-      <div ref={trackRef} className="relative w-full" style={{ height: "200vh" }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          <div className="relative w-full max-w-4xl px-6" style={{ height: "520px" }}>
-            {cards.map((card, index) => (
-              <div
-                key={index}
-                data-card
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full border-2 border-[#333] bg-[#0a0a0a] rounded-xl p-6 shadow-brutal-lg transition-all duration-75"
-                style={{ zIndex: cards.length - index }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="h-3 w-3 rounded-full bg-[var(--bg-accent)]" />
-                  <h2 className="text-xl md:text-2xl font-pixel text-white tracking-widest uppercase">
-                    {card.title}
-                  </h2>
-                </div>
-                <div className="w-12 h-1 bg-[var(--bg-accent)] mb-6" />
-
-                {index === 0 && (
-                  <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">AI, Machine Learning & Inference</p>
-                      <p>Frameworks & Architectures: PyTorch (LSTM, Neural Networks), Local RAG architectures, and LangGraph.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Tools & Platforms</p>
-                      <p>Nvidia NIM, Google AI Studio, Claude, and Gemini.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Techniques</p>
-                      <p>Prompt Engineering and Quantized deployment (Llama, Qwen 3).</p>
-                    </div>
-                  </div>
-                )}
-
-                {index === 1 && (
-                  <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Cloud Hosting & Environments</p>
-                      <p>Google Cloud Platform (GCP), Vercel, and Bare-metal deployment.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Containerization & CI/CD</p>
-                      <p>Docker and GitHub Actions/Codespaces.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Operating Systems</p>
-                      <p>Linux (custom kernels, CachyOS) and WSL.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Hardware Management</p>
-                      <p>VRAM tuning, GPU undervolting, and RTX 50-series TGP management.</p>
-                    </div>
-                  </div>
-                )}
-
-                {index === 2 && (
-                  <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Core Languages</p>
-                      <p>Python, Java, JavaScript/TypeScript, and Rust.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Basic Knowledge</p>
-                      <p>Go.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Frameworks</p>
-                      <p>React and Three.js.</p>
-                    </div>
-                  </div>
-                )}
-
-                {index === 3 && (
-                  <div className="space-y-4 text-sm md:text-base text-[#E5E5E5] leading-relaxed">
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Databases</p>
-                      <p>Supabase and SQL.</p>
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-widest text-[var(--bg-accent)] mb-1">Workflow Automation</p>
-                      <p>n8n Workflow Automation.</p>
-                    </div>
-                  </div>
-                )}
+      <div
+        ref={trackRef}
+        className="wrapper"
+        style={{
+          '--cards-amount': cards.length,
+          '--rolling-count': cards.length,
+        } as React.CSSProperties}
+      >
+        {cards.map((card, index) => {
+          const layerCount = Math.max(0, cards.length - 1 - index);
+          const layers = [];
+          let current = renderContent(card, index);
+          for (let i = 0; i < layerCount; i++) {
+            current = (
+              <div key={i} className="layer" style={{ '--depth0': i } as React.CSSProperties}>
+                {current}
               </div>
-            ))}
-          </div>
-        </div>
+            );
+          }
+          return (
+            <div
+              key={index}
+              className="card"
+              style={{ '--index0': index } as React.CSSProperties}
+            >
+              {current}
+            </div>
+          );
+        })}
       </div>
 
       <div className="w-full max-w-7xl relative z-10 mt-12">
@@ -590,7 +600,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
 
 export default function Home() {
   const [activeView, setActiveView] = useState("hero");
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const isTransitioning = useRef(false);
   const activeViewRef = useRef(activeView);
   const transitionTimeoutRef = useRef<number | undefined>(undefined);
@@ -719,7 +729,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={`w-full min-h-screen relative ${isDark ? "text-white" : "text-black"}`} style={{ background: isDark ? "#0a0a0a" : "#F0F0F0" }}>
+    <main className={`w-full min-h-screen relative ${isDark ? "text-black" : "text-white"}`} style={{ background: isDark ? "#F0F0F0" : "#0a0a0a" }}>
       <AnimatePresence mode="wait">
         {activeView === "hero" && (
           <motion.div
@@ -753,7 +763,7 @@ export default function Home() {
                   onClick={() => setIsDark(!isDark)}
                   className="border-2 border-brand-black px-4 py-2 md:px-3 md:py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-[var(--bg-accent)] text-white"
                 >
-                  {isDark ? "LIGHT" : "DARK"}
+                  {isDark ? "DARK" : "LIGHT"}
                 </button>
               </div>
             </nav>
