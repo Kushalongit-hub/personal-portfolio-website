@@ -9,7 +9,7 @@ import BlackHoleVideo from "@/components/BlackHoleVideo";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import ShaderBackground from "@/components/ShaderBackground";
 
-const ResearchView = ({ isDark }: { isDark: boolean }) => {
+const ResearchView = ({ isDark, onNavigate }: { isDark: boolean; onNavigate: (view: string) => void }) => {
   return (
     <div className="w-full bg-blueprint-grid flex flex-col items-center pt-20 pb-40">
       <div className="w-full max-w-7xl px-6 mb-24 flex flex-col items-center text-center relative z-20">
@@ -39,11 +39,22 @@ const ResearchView = ({ isDark }: { isDark: boolean }) => {
           </div>
         </TerminalWindow>
       </div>
+
+      <div className="w-full max-w-7xl relative z-10 mt-12">
+        <div className="flex justify-center gap-3">
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("projects")}>
+            PROJECTS
+          </InteractiveBadge>
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("contact")}>
+            CONTACT
+          </InteractiveBadge>
+        </div>
+      </div>
     </div>
   );
 };
 
-const ContactView = () => {
+const ContactView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
   return (
     <div className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center overflow-y-auto">
       <ShaderBackground />
@@ -79,6 +90,14 @@ const ContactView = () => {
             </div>
           </div>
         </TerminalWindow>
+      </div>
+
+      <div className="w-full max-w-7xl relative z-10 mt-12">
+        <div className="flex justify-center">
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("research")}>
+            RESEARCH
+          </InteractiveBadge>
+        </div>
       </div>
     </div>
   );
@@ -232,7 +251,10 @@ const TechStackView = ({ onNavigate }: { onNavigate: (view: string) => void }) =
       </div>
 
       <div className="w-full max-w-7xl relative z-10 mt-12">
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-3">
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("projects")}>
+            PROJECTS
+          </InteractiveBadge>
           <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("contact")}>
             CONTACT
           </InteractiveBadge>
@@ -549,8 +571,14 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
 
       {/* Bottom Action */}
       <div className="w-full max-w-7xl px-6 mt-12">
-        <div className="flex justify-center">
-                <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("contact")}>
+        <div className="flex justify-center gap-3">
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("techstack")}>
+            TECH STACK
+          </InteractiveBadge>
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("research")}>
+            RESEARCH
+          </InteractiveBadge>
+          <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("contact")}>
             CONTACT
           </InteractiveBadge>
         </div>
@@ -754,7 +782,7 @@ export default function Home() {
                     development and secure application practices.
                   </p>
                   <div className="mt-8 flex gap-6">
-                    <InteractiveBadge href="#" variant="gray" onClick={() => setActiveView("projects")}>
+                    <InteractiveBadge href="#" variant="gray" onClick={() => setActiveView("techstack")}>
                       View Projects
                     </InteractiveBadge>
                     <InteractiveBadge href="https://www.linkedin.com/in/kushal-m-anvekar/">
@@ -875,7 +903,7 @@ export default function Home() {
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
              className="w-full min-h-screen relative z-10 bg-blueprint-grid"
           >
-            <ResearchView isDark={isDark} />
+            <ResearchView isDark={isDark} onNavigate={setActiveView} />
           </motion.div>
         )}
 
@@ -888,7 +916,7 @@ export default function Home() {
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="w-full min-h-screen relative z-10"
           >
-            <ContactView />
+            <ContactView onNavigate={setActiveView} />
           </motion.div>
         )}
       </AnimatePresence>
