@@ -16,7 +16,7 @@ export default function InteractiveBadge({
   onClick?: (e?: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   const base =
-    "inline-block border-2 border-brand-black px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none";
+    "inline-block border-2 border-brand-black px-4 py-2 md:px-3 md:py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none";
 
   const styles =
     variant === "gray"

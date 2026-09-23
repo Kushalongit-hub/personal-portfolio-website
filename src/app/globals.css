@@ -70,3 +70,16 @@ body::before {
     linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
   background-size: 50px 50px;
 }
+
+::selection {
+  background: var(--bg-accent);
+  color: white;
+}
+
+* {
+  cursor: crosshair;
+}
+
+a, button {
+  cursor: pointer;
+}

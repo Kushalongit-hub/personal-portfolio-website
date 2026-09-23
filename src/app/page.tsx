@@ -9,21 +9,21 @@ import BlackHoleVideo from "@/components/BlackHoleVideo";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import ShaderBackground from "@/components/ShaderBackground";
 
-const ResearchView = () => {
+const ResearchView = ({ isDark }: { isDark: boolean }) => {
   return (
     <div className="w-full bg-blueprint-grid flex flex-col items-center pt-20 pb-40">
       <div className="w-full max-w-7xl px-6 mb-24 flex flex-col items-center text-center relative z-20">
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.ACCESS_RESEARCH
         </p>
-        <h1 className="text-5xl md:text-7xl font-pixel text-black tracking-widest uppercase">
+        <h1 className={`text-5xl md:text-7xl font-pixel tracking-widest uppercase ${isDark ? "text-white" : "text-black"}`}>
           Research
         </h1>
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
       </div>
 
       <div className="w-full max-w-7xl relative z-10">
-        <TerminalWindow title="research" subtitle="node" variant="white">
+        <TerminalWindow title="research" subtitle="node" variant="windows">
           <div className="space-y-6 text-sm leading-relaxed">
             <p>
               Research streams are still compiling. This section is currently under development as I continue exploring ML/AI systems, RAG pipelines, and applied computer vision. New findings will be published here as they are validated and documented.
@@ -84,6 +84,28 @@ const ContactView = () => {
   );
 };
 
+const TypingTagline = () => {
+  const text = "Building AI-driven systems & resilient automations.";
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i === text.length) clearInterval(interval);
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <p className="text-sm md:text-base font-mono text-[var(--bg-accent)] mt-3 h-5">
+      {displayed}
+      <span className="animate-pulse">|</span>
+    </p>
+  );
+};
+
 const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
   const projects = [
     {
@@ -105,9 +127,9 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
       href: "https://github.com/Kushalongit-hub/Vakil-ai",
     },
     {
-      title: "blackhole_sim",
+      title: "yt-dlp",
       subtitle: "readme",
-      name: "Simple YT-DLP Downloader",
+      name: "YT-DLP",
       tech: "Python / CustomTkinter / yt-dlp",
       description:
         "A modular YouTube/video downloader with a headless Python backend (yt-dlp wrapper) and a dark-mode CustomTkinter GUI. Supports CLI and GUI modes, quality/format selection, progress hooks, and ffmpeg validation.",
@@ -157,160 +179,166 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
         </div>
       </div>
 
-      {/* Floating Terminals inside Monitor Frame */}
-      <div className="w-full max-w-7xl px-6 relative">
-        <ShaderBackground />
-        <div
-          className="relative bg-[#050505] border-4 border-[#1a1a1a] rounded-3xl overflow-hidden shadow-2xl"
+      {/* Monitor Frame - Desktop Only */}
+      <div className="hidden md:block relative bg-[#050505] border-4 border-[#1a1a1a] rounded-3xl overflow-hidden shadow-2xl"
+        style={{
+          boxShadow: "0 0 0 2px #262626, 0 25px 50px -12px rgba(0, 0, 0, 0.8)",
+          minHeight: "900px",
+        }}
+      >
+        {/* Screen Glow / Scanlines */}
+        <div className="absolute inset-0 pointer-events-none z-50 opacity-20"
           style={{
-            boxShadow: "0 0 0 2px #262626, 0 25px 50px -12px rgba(0, 0, 0, 0.8)",
-            minHeight: "900px",
+            background: "repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
           }}
-        >
-          {/* Screen Glow / Scanlines */}
-          <div className="absolute inset-0 pointer-events-none z-50 opacity-20"
-            style={{
-              background: "repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
-            }}
-          />
+        />
 
-          {/* Monitor Stand / Bezel Accent */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#262626] rounded-full z-50" />
+        {/* Monitor Stand / Bezel Accent */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#262626] rounded-full z-50" />
 
-          {/* Inner Screen */}
-          <div className="relative w-full h-full" style={{ minHeight: "900px" }}>
-            <div className="hidden md:block">
-              {/* Top Left - Try-On */}
-              <div
-                className="absolute top-8 left-8 w-[42%]"
-                style={{ transform: "rotate(-2deg)", zIndex: 10 }}
-              >
-                <TerminalWindow title={projects[0].title} subtitle={projects[0].subtitle} variant="windows">
-                  <div className="space-y-3 text-sm leading-relaxed">
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-1">
-                        {projects[0].name}
-                      </h3>
-                      <p className="text-xs text-[#525252] font-mono">
-                        {projects[0].tech}
-                      </p>
-                    </div>
-                    <p>{projects[0].description}</p>
-                    <div>
-                      <InteractiveBadge href={projects[0].href} variant="gray">
-                        GITHUB
-                      </InteractiveBadge>
-                    </div>
-                  </div>
-                </TerminalWindow>
-              </div>
-
-              {/* Top Right - Vakil-ai */}
-              <div
-                className="absolute top-8 right-8 w-[42%]"
-                style={{ transform: "rotate(2deg)", zIndex: 20 }}
-              >
-                <TerminalWindow title={projects[1].title} subtitle={projects[1].subtitle} variant="windows">
-                  <div className="space-y-3 text-sm leading-relaxed">
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-1">
-                        {projects[1].name}
-                      </h3>
-                      <p className="text-xs text-[#525252] font-mono">
-                        {projects[1].tech}
-                      </p>
-                    </div>
-                    <p>{projects[1].description}</p>
-                    <div>
-                      <InteractiveBadge href={projects[1].href} variant="gray">
-                        GITHUB
-                      </InteractiveBadge>
-                    </div>
-                  </div>
-                </TerminalWindow>
-              </div>
-
-              {/* Bottom Left - Simple YT-DLP */}
-              <div
-                className="absolute top-[48%] left-12 w-[38%]"
-                style={{ transform: "rotate(1.5deg)", zIndex: 30 }}
-              >
-                <TerminalWindow title={projects[2].title} subtitle={projects[2].subtitle} variant="windows">
-                  <div className="space-y-3 text-sm leading-relaxed">
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-1">
-                        {projects[2].name}
-                      </h3>
-                      <p className="text-xs text-[#525252] font-mono">
-                        {projects[2].tech}
-                      </p>
-                    </div>
-                    <p>{projects[2].description}</p>
-                    <div>
-                      <InteractiveBadge href={projects[2].href} variant="gray">
-                        GITHUB
-                      </InteractiveBadge>
-                    </div>
-                  </div>
-                </TerminalWindow>
-              </div>
-
-              {/* Bottom Right - AI Video Editor */}
-              <div
-                className="absolute top-[52%] right-12 w-[38%]"
-                style={{ transform: "rotate(-1.5deg)", zIndex: 40 }}
-              >
-                <TerminalWindow title={projects[3].title} subtitle={projects[3].subtitle} variant="windows">
-                  <div className="space-y-3 text-sm leading-relaxed">
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-1">
-                        {projects[3].name}
-                      </h3>
-                      <p className="text-xs text-[#525252] font-mono">
-                        {projects[3].tech}
-                      </p>
-                    </div>
-                    <p>{projects[3].description}</p>
-                    <div>
-                      <InteractiveBadge href={projects[3].href} variant="gray">
-                        GITHUB
-                      </InteractiveBadge>
-                    </div>
-                  </div>
-                </TerminalWindow>
-              </div>
-            </div>
-
-            {/* Mobile Grid */}
-            <div className="md:hidden grid grid-cols-1 gap-6 p-6">
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
-                >
-                  <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
-                    <div className="space-y-3 text-sm leading-relaxed">
-                      <div>
-                        <h3 className="text-lg font-bold text-white mb-1">
-                          {project.name}
-                        </h3>
-                        <p className="text-xs text-[#525252] font-mono">
-                          {project.tech}
-                        </p>
-                      </div>
-                      <p>{project.description}</p>
-                      <div>
-                        <InteractiveBadge href={project.href} variant="gray">
-                          GITHUB
-                        </InteractiveBadge>
-                      </div>
-                    </div>
-                  </TerminalWindow>
+        {/* Inner Screen */}
+        <div className="relative w-full h-full" style={{ minHeight: "900px" }}>
+          {/* Top Left - Try-On */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="absolute top-8 left-8 w-[42%]"
+            style={{ transform: "rotate(-2deg)", zIndex: 10 }}
+          >
+            <TerminalWindow title={projects[0].title} subtitle={projects[0].subtitle} variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">
+                    {projects[0].name}
+                  </h3>
+                  <p className="text-xs text-[#525252] font-mono">
+                    {projects[0].tech}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
+                <p>{projects[0].description}</p>
+                <div>
+                  <InteractiveBadge href={projects[0].href} variant="gray">
+                    GITHUB
+                  </InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
+          </motion.div>
+
+          {/* Top Right - Vakil-ai */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="absolute top-8 right-8 w-[42%]"
+            style={{ transform: "rotate(2deg)", zIndex: 20 }}
+          >
+            <TerminalWindow title={projects[1].title} subtitle={projects[1].subtitle} variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">
+                    {projects[1].name}
+                  </h3>
+                  <p className="text-xs text-[#525252] font-mono">
+                    {projects[1].tech}
+                  </p>
+                </div>
+                <p>{projects[1].description}</p>
+                <div>
+                  <InteractiveBadge href={projects[1].href} variant="gray">
+                    GITHUB
+                  </InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
+          </motion.div>
+
+          {/* Bottom Left - Simple YT-DLP */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="absolute top-[48%] left-12 w-[38%]"
+            style={{ transform: "rotate(1.5deg)", zIndex: 30 }}
+          >
+            <TerminalWindow title={projects[2].title} subtitle={projects[2].subtitle} variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">
+                    {projects[2].name}
+                  </h3>
+                  <p className="text-xs text-[#525252] font-mono">
+                    {projects[2].tech}
+                  </p>
+                </div>
+                <p>{projects[2].description}</p>
+                <div>
+                  <InteractiveBadge href={projects[2].href} variant="gray">
+                    GITHUB
+                  </InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
+          </motion.div>
+
+          {/* Bottom Right - AI Video Editor */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="absolute top-[52%] right-12 w-[38%]"
+            style={{ transform: "rotate(-1.5deg)", zIndex: 40 }}
+          >
+            <TerminalWindow title={projects[3].title} subtitle={projects[3].subtitle} variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">
+                    {projects[3].name}
+                  </h3>
+                  <p className="text-xs text-[#525252] font-mono">
+                    {projects[3].tech}
+                  </p>
+                </div>
+                <p>{projects[3].description}</p>
+                <div>
+                  <InteractiveBadge href={projects[3].href} variant="gray">
+                    GITHUB
+                  </InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
+          </motion.div>
         </div>
+      </div>
+
+      {/* Mobile Grid */}
+      <div className="md:hidden grid grid-cols-1 gap-6 p-6">
+        {projects.map((project, index) => (
+          <div
+            key={index}
+            className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
+          >
+            <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
+              <div className="space-y-3 text-sm leading-relaxed">
+                <div>
+                  <h3 className="text-lg font-bold text-white mb-1">
+                    {project.name}
+                  </h3>
+                  <p className="text-xs text-[#525252] font-mono">
+                    {project.tech}
+                  </p>
+                </div>
+                <p>{project.description}</p>
+                <div>
+                  <InteractiveBadge href={project.href} variant="gray">
+                    GITHUB
+                  </InteractiveBadge>
+                </div>
+              </div>
+            </TerminalWindow>
+          </div>
+        ))}
       </div>
 
       {/* Bottom Action */}
@@ -327,6 +355,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
 
 export default function Home() {
   const [activeView, setActiveView] = useState("hero");
+  const [isDark, setIsDark] = useState(true);
   const isTransitioning = useRef(false);
   const activeViewRef = useRef(activeView);
   const transitionTimeoutRef = useRef<number | undefined>(undefined);
@@ -394,32 +423,33 @@ export default function Home() {
     const handleWheel = (e: WheelEvent) => {
       if (isTransitioning.current) return;
 
+      const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
       const current = activeViewRef.current;
       const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
       const atTop = window.scrollY <= 10;
 
       if (e.deltaY > 0 && current === "hero" && atBottom) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("projects");
       } else if (e.deltaY > 0 && current === "projects" && atBottom) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("research");
       } else if (e.deltaY > 0 && current === "research" && atBottom) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("contact");
       } else if (e.deltaY < 0 && current === "contact" && atTop) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("research");
       } else if (e.deltaY < 0 && current === "research" && atTop) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("projects");
       } else if (e.deltaY < 0 && current === "projects" && atTop) {
-        e.preventDefault();
+        if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("hero");
       }
@@ -440,7 +470,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="w-full min-h-screen bg-blueprint-grid relative">
+    <main className={`w-full min-h-screen relative ${isDark ? "text-white" : "text-black"}`} style={{ background: isDark ? "#0a0a0a" : "#F0F0F0" }}>
       <AnimatePresence mode="wait">
         {activeView === "hero" && (
           <motion.div
@@ -448,16 +478,16 @@ export default function Home() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="w-full min-h-screen relative z-10"
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="w-full min-h-screen relative z-10 bg-blueprint-grid"
           >
             <ReticleOverlay />
 
-            <nav className="flex items-center justify-between border-b-2 border-brand-black bg-white px-6 py-4 shadow-brutal">
+            <nav className="flex flex-col md:flex-row md:items-center md:justify-between border-b-2 border-brand-black bg-white px-6 py-4 shadow-brutal gap-3 md:gap-0">
               <div className="text-lg font-bold uppercase tracking-widest">
                 Kushal<span className="text-accent">.exe</span>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                 <InteractiveBadge href="https://github.com/Kushalongit-hub">
                   GITHUB
                 </InteractiveBadge>
@@ -467,6 +497,12 @@ export default function Home() {
                 <InteractiveBadge href="/Kushal_Anvekar_Resume.pdf" target="_blank" rel="noopener noreferrer">
                   RESUME PDF
                 </InteractiveBadge>
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="border-2 border-brand-black px-4 py-2 md:px-3 md:py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-[var(--bg-accent)] text-white"
+                >
+                  {isDark ? "LIGHT" : "DARK"}
+                </button>
               </div>
             </nav>
 
@@ -479,6 +515,7 @@ export default function Home() {
                     <br />
                     ANVEKAR
                   </h1>
+                  <TypingTagline />
                   <p className="text-base md:text-lg font-mono leading-relaxed max-w-2xl mt-6 mb-8 text-black/80">
                     Diploma candidate in Computer Science (AI/ML) engineered for the
                     complete development lifecycle. I specialize in deploying{" "}
@@ -518,8 +555,8 @@ export default function Home() {
                           <span className="opacity-50">location:</span> BENGALURU, IN
                         </p>
                         <p>
-                          <span className="opacity-50">status:</span> SEEKING
-                          TECHNOLOGY INTERNSHIP
+                          <span className="opacity-50">status:</span>{" "}
+                          <span className="animate-pulse">SEEKING TECHNOLOGY INTERNSHIP</span>
                         </p>
 
                         <div className="my-4 border-t border-dashed border-black/30 w-full" />
@@ -558,6 +595,14 @@ export default function Home() {
                 </div>
               </div>
             </section>
+
+            {/* Keyboard Hints */}
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-4 text-xs font-mono text-[#525252]">
+              <span className="border border-[#333] rounded px-2 py-1">↑↓</span>
+              <span>Navigate</span>
+              <span className="border border-[#333] rounded px-2 py-1">Scroll</span>
+              <span>Explore</span>
+            </div>
           </motion.div>
         )}
 
@@ -567,8 +612,8 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="w-full min-h-screen relative z-10"
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="w-full min-h-screen relative z-10 bg-blueprint-grid"
           >
             <ProjectsView onNavigate={setActiveView} />
             <div className="w-full max-w-7xl relative z-10 mt-12">
@@ -590,10 +635,10 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="w-full min-h-screen relative z-10"
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+             className="w-full min-h-screen relative z-10 bg-blueprint-grid"
           >
-            <ResearchView />
+            <ResearchView isDark={isDark} />
           </motion.div>
         )}
 
@@ -603,7 +648,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="w-full min-h-screen relative z-10"
           >
             <ContactView />
