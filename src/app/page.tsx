@@ -581,6 +581,9 @@ export default function Home() {
         e.preventDefault();
         if (current === "hero") {
           isTransitioning.current = true;
+          setActiveView("techstack");
+        } else if (current === "techstack") {
+          isTransitioning.current = true;
           setActiveView("projects");
         } else if (current === "projects") {
           isTransitioning.current = true;
@@ -598,12 +601,15 @@ export default function Home() {
         } else if (current === "research") {
           isTransitioning.current = true;
           setActiveView("projects");
-        } else if (current === "projects" && window.scrollY > 100) {
-          window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
-          return;
-        } else {
+        } else if (current === "projects") {
+          isTransitioning.current = true;
+          setActiveView("techstack");
+        } else if (current === "techstack") {
           isTransitioning.current = true;
           setActiveView("hero");
+        } else if (current === "hero" && window.scrollY > 100) {
+          window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
+          return;
         }
       }
 
@@ -638,6 +644,10 @@ export default function Home() {
       if (e.deltaY > 0 && current === "hero" && atBottom) {
         if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
+        setActiveView("techstack");
+      } else if (e.deltaY > 0 && current === "techstack" && atBottom) {
+        if (!isTouchDevice) e.preventDefault();
+        isTransitioning.current = true;
         setActiveView("projects");
       } else if (e.deltaY > 0 && current === "projects" && atBottom) {
         if (!isTouchDevice) e.preventDefault();
@@ -656,6 +666,10 @@ export default function Home() {
         isTransitioning.current = true;
         setActiveView("projects");
       } else if (e.deltaY < 0 && current === "projects" && atTop) {
+        if (!isTouchDevice) e.preventDefault();
+        isTransitioning.current = true;
+        setActiveView("techstack");
+      } else if (e.deltaY < 0 && current === "techstack" && atTop) {
         if (!isTouchDevice) e.preventDefault();
         isTransitioning.current = true;
         setActiveView("hero");
@@ -816,6 +830,19 @@ export default function Home() {
           </motion.div>
         )}
 
+        {activeView === "techstack" && (
+          <motion.div
+            key="techstack-view"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="w-full min-h-screen relative z-10"
+          >
+            <TechStackView onNavigate={setActiveView} />
+          </motion.div>
+        )}
+
         {activeView === "projects" && (
           <motion.div
             key="projects-view"
@@ -864,29 +891,16 @@ export default function Home() {
             <ContactView />
           </motion.div>
         )}
-
-        {activeView === "techstack" && (
-          <motion.div
-            key="techstack-view"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="w-full min-h-screen relative z-10"
-          >
-            <TechStackView onNavigate={setActiveView} />
-          </motion.div>
-        )}
       </AnimatePresence>
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center gap-3 border-2 border-brand-black bg-white px-4 py-2 shadow-brutal">
         <button
           onClick={() => {
-            if (activeView === "projects") setActiveView("hero");
+            if (activeView === "projects") setActiveView("techstack");
             else if (activeView === "research") setActiveView("projects");
             else if (activeView === "contact") setActiveView("research");
-            else if (activeView === "techstack") setActiveView("contact");
+            else if (activeView === "techstack") setActiveView("hero");
           }}
           className="border-2 border-brand-black px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-brand-gray text-black"
         >
@@ -897,10 +911,10 @@ export default function Home() {
         </span>
         <button
           onClick={() => {
-            if (activeView === "hero") setActiveView("projects");
+            if (activeView === "hero") setActiveView("techstack");
+            else if (activeView === "techstack") setActiveView("projects");
             else if (activeView === "projects") setActiveView("research");
             else if (activeView === "research") setActiveView("contact");
-            else if (activeView === "contact") setActiveView("techstack");
           }}
           className="border-2 border-brand-black px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-[var(--bg-accent)] text-white"
         >
