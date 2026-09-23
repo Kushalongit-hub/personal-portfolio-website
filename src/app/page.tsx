@@ -655,6 +655,33 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Bottom Nav */}
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center gap-3 border-2 border-brand-black bg-white px-4 py-2 shadow-brutal">
+        <button
+          onClick={() => {
+            if (activeView === "projects") setActiveView("hero");
+            else if (activeView === "research") setActiveView("projects");
+            else if (activeView === "contact") setActiveView("research");
+          }}
+          className="border-2 border-brand-black px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-brand-gray text-black"
+        >
+          Prev
+        </button>
+        <span className="text-xs font-mono uppercase tracking-widest">
+          {activeView}
+        </span>
+        <button
+          onClick={() => {
+            if (activeView === "hero") setActiveView("projects");
+            else if (activeView === "projects") setActiveView("research");
+            else if (activeView === "research") setActiveView("contact");
+          }}
+          className="border-2 border-brand-black px-3 py-1 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-[var(--bg-accent)] text-white"
+        >
+          Next
+        </button>
+      </div>
     </main>
   );
 }
