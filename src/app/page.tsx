@@ -7,6 +7,7 @@ import TerminalWindow from "@/components/TerminalWindow";
 import InteractiveBadge from "@/components/InteractiveBadge";
 import BlackHoleVideo from "@/components/BlackHoleVideo";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
+import ShaderBackground from "@/components/ShaderBackground";
 
 const ResearchView = () => {
   return (
@@ -45,6 +46,7 @@ const ResearchView = () => {
 const ContactView = () => {
   return (
     <div className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center overflow-y-auto">
+      <ShaderBackground />
       <div className="w-full max-w-7xl px-6 pt-20 pb-40 flex flex-col items-center text-center relative z-20">
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.INITIATE_CONTACT
@@ -82,11 +84,50 @@ const ContactView = () => {
   );
 };
 
-const MacbookShowcaseView = () => {
+const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) => {
+  const projects = [
+    {
+      title: "try_on",
+      subtitle: "readme",
+      name: "Try-On Virtual Exhibition",
+      tech: "PyTorch / Vercel / Supabase",
+      description:
+        "Try-On the Virtual Exhibition is a cutting-edge web application that enables users to virtually try on fashion and beauty products using AI-powered image generation. Built for college exhibitions, this system provides an immersive experience where students can upload photos or use their camera to see how different products look on them in real-time.",
+      href: "https://github.com/Kushalongit-hub/Try-On",
+    },
+    {
+      title: "vakil_ai",
+      subtitle: "readme",
+      name: "Vakil-ai",
+      tech: "Legal Assistant",
+      description:
+        "Vakil AI - India's First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).",
+      href: "https://github.com/Kushalongit-hub/Vakil-ai",
+    },
+    {
+      title: "blackhole_sim",
+      subtitle: "readme",
+      name: "Simple YT-DLP Downloader",
+      tech: "Python / CustomTkinter / yt-dlp",
+      description:
+        "A modular YouTube/video downloader with a headless Python backend (yt-dlp wrapper) and a dark-mode CustomTkinter GUI. Supports CLI and GUI modes, quality/format selection, progress hooks, and ffmpeg validation.",
+      href: "https://github.com/Kushalongit-hub/Simple_YT_DLP",
+    },
+    {
+      title: "ai_video_editor",
+      subtitle: "readme",
+      name: "AI Powered Video Editor",
+      tech: "Ongoing",
+      description:
+        "An AI-powered video editor currently in development. Designed to automate editing workflows using ML-assisted scene detection, transcription-driven cuts, and intelligent media assembly. This project is actively being built and is not yet released.",
+      href: "https://github.com/Kushalongit-hub",
+    },
+  ];
+
   return (
     <div className="w-full bg-[#0a0a0a] flex flex-col items-center pt-20 pb-40">
       {/* Master Page Header */}
-      <div className="w-full max-w-7xl px-6 mb-24 flex flex-col items-center text-center relative z-20">
+      <div className="w-full max-w-7xl px-6 mb-12 flex flex-col items-center text-center relative z-20">
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.DIRECTORY.ACCESS
         </p>
@@ -97,72 +138,189 @@ const MacbookShowcaseView = () => {
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
       </div>
 
-      <div className="w-full max-w-7xl mb-[36vh]">
-        <MacbookScroll
-          title={
-            <span className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
-              Try-On Virtual Exhibition <br />
-              <span className="text-sm font-mono text-gray-500">PyTorch / Vercel / Supabase</span>
-            </span>
-          }
-          src="/macbook1.png"
-          showGradient={false}
-        />
-      </div>
-
-      <div className="w-full max-w-7xl relative z-10">
-        <TerminalWindow title="try_on" subtitle="readme" variant="windows">
-          <div className="space-y-3 text-sm leading-relaxed">
-            <p>
-              Try-On the Virtual Exhibition is a cutting-edge web application that enables users to virtually try on fashion and beauty products using AI-powered image generation. Built for college exhibitions, this system provides an immersive experience where students can upload photos or use their camera to see how different products look on them in real-time.
-            </p>
-            <div>
-              <InteractiveBadge href="https://github.com/Kushalongit-hub/Try-On" variant="gray">GITHUB</InteractiveBadge>
+      {/* Dev Environment Header */}
+      <div className="w-full max-w-7xl mb-8">
+        <div className="flex items-center justify-between border-b border-[#333] px-4 py-2">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
             </div>
+            <span className="text-xs font-mono text-[#525252] ml-2">
+              projects/
+            </span>
           </div>
-        </TerminalWindow>
-      </div>
-
-      <div className="h-[40vh] w-full" />
-
-      <div className="w-full max-w-7xl mb-[32vh]">
-        <MacbookScroll
-          title={
-            <span className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
-              Vakil-ai <br />
-              <span className="text-sm font-mono text-gray-500">Legal Assistant</span>
-            </span>
-          }
-          src="/vakil-ai.png"
-          showGradient={false}
-        />
-      </div>
-
-      <div className="w-full max-w-7xl relative z-10">
-          <TerminalWindow title="vakil_ai" subtitle="readme" variant="windows">
-            <div className="space-y-3 text-sm leading-relaxed">
-              <p>
-                Vakil AI - India&apos;s First Free Legal Drafting Assistant. Vakil AI is a free, open-source, RAG-powered legal assistant designed specifically for Indian lawyers. It helps with legal research, document drafting, and navigating the new criminal laws (BNS, BNSS, BSA).
-              </p>
-              <div>
-                <InteractiveBadge href="https://github.com/Kushalongit-hub/Vakil-ai" variant="gray">GITHUB</InteractiveBadge>
-              </div>
-            </div>
-          </TerminalWindow>
-
-          <div className="mt-12 w-full max-w-7xl relative z-10">
-            <TerminalWindow title="github" subtitle="projects" variant="windows">
-              <div className="space-y-3 text-sm leading-relaxed">
-                <p>
-                  Explore more projects, experiments, and open-source contributions on GitHub.
-                </p>
-                <div>
-                  <InteractiveBadge href="https://github.com/Kushalongit-hub" variant="gray">GITHUB</InteractiveBadge>
-                </div>
-              </div>
-            </TerminalWindow>
+          <div className="text-xs font-mono text-[#525252]">
+            v1.0.0
           </div>
         </div>
+      </div>
+
+      {/* Floating Terminals inside Monitor Frame */}
+      <div className="w-full max-w-7xl px-6 relative">
+        <ShaderBackground />
+        <div
+          className="relative bg-[#050505] border-4 border-[#1a1a1a] rounded-3xl overflow-hidden shadow-2xl"
+          style={{
+            boxShadow: "0 0 0 2px #262626, 0 25px 50px -12px rgba(0, 0, 0, 0.8)",
+            minHeight: "900px",
+          }}
+        >
+          {/* Screen Glow / Scanlines */}
+          <div className="absolute inset-0 pointer-events-none z-50 opacity-20"
+            style={{
+              background: "repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
+            }}
+          />
+
+          {/* Monitor Stand / Bezel Accent */}
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#262626] rounded-full z-50" />
+
+          {/* Inner Screen */}
+          <div className="relative w-full h-full" style={{ minHeight: "900px" }}>
+            <div className="hidden md:block">
+              {/* Top Left - Try-On */}
+              <div
+                className="absolute top-8 left-8 w-[42%]"
+                style={{ transform: "rotate(-2deg)", zIndex: 10 }}
+              >
+                <TerminalWindow title={projects[0].title} subtitle={projects[0].subtitle} variant="windows">
+                  <div className="space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">
+                        {projects[0].name}
+                      </h3>
+                      <p className="text-xs text-[#525252] font-mono">
+                        {projects[0].tech}
+                      </p>
+                    </div>
+                    <p>{projects[0].description}</p>
+                    <div>
+                      <InteractiveBadge href={projects[0].href} variant="gray">
+                        GITHUB
+                      </InteractiveBadge>
+                    </div>
+                  </div>
+                </TerminalWindow>
+              </div>
+
+              {/* Top Right - Vakil-ai */}
+              <div
+                className="absolute top-8 right-8 w-[42%]"
+                style={{ transform: "rotate(2deg)", zIndex: 20 }}
+              >
+                <TerminalWindow title={projects[1].title} subtitle={projects[1].subtitle} variant="windows">
+                  <div className="space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">
+                        {projects[1].name}
+                      </h3>
+                      <p className="text-xs text-[#525252] font-mono">
+                        {projects[1].tech}
+                      </p>
+                    </div>
+                    <p>{projects[1].description}</p>
+                    <div>
+                      <InteractiveBadge href={projects[1].href} variant="gray">
+                        GITHUB
+                      </InteractiveBadge>
+                    </div>
+                  </div>
+                </TerminalWindow>
+              </div>
+
+              {/* Bottom Left - Simple YT-DLP */}
+              <div
+                className="absolute top-[48%] left-12 w-[38%]"
+                style={{ transform: "rotate(1.5deg)", zIndex: 30 }}
+              >
+                <TerminalWindow title={projects[2].title} subtitle={projects[2].subtitle} variant="windows">
+                  <div className="space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">
+                        {projects[2].name}
+                      </h3>
+                      <p className="text-xs text-[#525252] font-mono">
+                        {projects[2].tech}
+                      </p>
+                    </div>
+                    <p>{projects[2].description}</p>
+                    <div>
+                      <InteractiveBadge href={projects[2].href} variant="gray">
+                        GITHUB
+                      </InteractiveBadge>
+                    </div>
+                  </div>
+                </TerminalWindow>
+              </div>
+
+              {/* Bottom Right - AI Video Editor */}
+              <div
+                className="absolute top-[52%] right-12 w-[38%]"
+                style={{ transform: "rotate(-1.5deg)", zIndex: 40 }}
+              >
+                <TerminalWindow title={projects[3].title} subtitle={projects[3].subtitle} variant="windows">
+                  <div className="space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">
+                        {projects[3].name}
+                      </h3>
+                      <p className="text-xs text-[#525252] font-mono">
+                        {projects[3].tech}
+                      </p>
+                    </div>
+                    <p>{projects[3].description}</p>
+                    <div>
+                      <InteractiveBadge href={projects[3].href} variant="gray">
+                        GITHUB
+                      </InteractiveBadge>
+                    </div>
+                  </div>
+                </TerminalWindow>
+              </div>
+            </div>
+
+            {/* Mobile Grid */}
+            <div className="md:hidden grid grid-cols-1 gap-6 p-6">
+              {projects.map((project, index) => (
+                <div
+                  key={index}
+                  className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
+                >
+                  <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
+                    <div className="space-y-3 text-sm leading-relaxed">
+                      <div>
+                        <h3 className="text-lg font-bold text-white mb-1">
+                          {project.name}
+                        </h3>
+                        <p className="text-xs text-[#525252] font-mono">
+                          {project.tech}
+                        </p>
+                      </div>
+                      <p>{project.description}</p>
+                      <div>
+                        <InteractiveBadge href={project.href} variant="gray">
+                          GITHUB
+                        </InteractiveBadge>
+                      </div>
+                    </div>
+                  </TerminalWindow>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Action */}
+      <div className="w-full max-w-7xl px-6 mt-12">
+        <div className="flex justify-center">
+                <InteractiveBadge href="#" variant="gray" onClick={() => onNavigate("contact")}>
+            CONTACT
+          </InteractiveBadge>
+        </div>
+      </div>
     </div>
   );
 };
@@ -170,56 +328,63 @@ const MacbookShowcaseView = () => {
 export default function Home() {
   const [activeView, setActiveView] = useState("hero");
   const isTransitioning = useRef(false);
+  const activeViewRef = useRef(activeView);
+  const transitionTimeoutRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    activeViewRef.current = activeView;
+  }, [activeView]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isTransitioning.current) return;
 
+      const current = activeViewRef.current;
+
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        if (activeView === "hero") {
+        if (current === "hero") {
           isTransitioning.current = true;
           setActiveView("projects");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
-        } else if (activeView === "projects") {
+        } else if (current === "projects") {
           isTransitioning.current = true;
           setActiveView("research");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
-        } else if (activeView === "research") {
+        } else if (current === "research") {
           isTransitioning.current = true;
           setActiveView("contact");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
         }
       }
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        if (activeView === "contact") {
+        if (current === "contact") {
           isTransitioning.current = true;
           setActiveView("research");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
-        } else if (activeView === "research") {
+        } else if (current === "research") {
           isTransitioning.current = true;
           setActiveView("projects");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
-        } else if (activeView === "projects" && window.scrollY > 100) {
+        } else if (current === "projects" && window.scrollY > 100) {
           window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" });
+          return;
         } else {
           isTransitioning.current = true;
           setActiveView("hero");
-          setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 300);
-          setTimeout(() => { isTransitioning.current = false; }, 400);
         }
+      }
+
+      if (isTransitioning.current) {
+        if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = window.setTimeout(() => {
+          isTransitioning.current = false;
+        }, 600);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeView]);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -229,48 +394,50 @@ export default function Home() {
     const handleWheel = (e: WheelEvent) => {
       if (isTransitioning.current) return;
 
-      if (e.deltaY > 0 && activeView === "hero" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+      const current = activeViewRef.current;
+      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+      const atTop = window.scrollY <= 10;
+
+      if (e.deltaY > 0 && current === "hero" && atBottom) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("projects");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
-      } else if (e.deltaY > 0 && activeView === "projects" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+      } else if (e.deltaY > 0 && current === "projects" && atBottom) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("research");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
-      } else if (e.deltaY > 0 && activeView === "research" && window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
+      } else if (e.deltaY > 0 && current === "research" && atBottom) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("contact");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
-      } else if (e.deltaY < 0 && activeView === "contact" && window.scrollY <= 10) {
+      } else if (e.deltaY < 0 && current === "contact" && atTop) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("research");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
-      } else if (e.deltaY < 0 && activeView === "research" && window.scrollY <= 10) {
+      } else if (e.deltaY < 0 && current === "research" && atTop) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("projects");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
-      } else if (e.deltaY < 0 && activeView === "projects" && window.scrollY <= 10) {
+      } else if (e.deltaY < 0 && current === "projects" && atTop) {
         e.preventDefault();
         isTransitioning.current = true;
         setActiveView("hero");
-        setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100);
-        setTimeout(() => { isTransitioning.current = false; }, 400);
+      }
+
+      if (isTransitioning.current) {
+        if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = window.setTimeout(() => {
+          isTransitioning.current = false;
+        }, 600);
       }
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [activeView]);
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      if (transitionTimeoutRef.current) window.clearTimeout(transitionTimeoutRef.current);
+    };
+  }, []);
 
   return (
     <main className="w-full min-h-screen bg-blueprint-grid relative">
@@ -308,7 +475,6 @@ export default function Home() {
                 <div>
                   <h1 className="text-4xl font-pixel uppercase leading-none tracking-widest break-words md:text-6xl">
                     KUSHAL 
-                    <br />
                     M
                     <br />
                     ANVEKAR
@@ -404,7 +570,7 @@ export default function Home() {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="w-full min-h-screen relative z-10"
           >
-            <MacbookShowcaseView />
+            <ProjectsView onNavigate={setActiveView} />
             <div className="w-full max-w-7xl relative z-10 mt-12">
               <div className="flex justify-center gap-3">
                 <InteractiveBadge href="#" variant="gray" onClick={() => setActiveView("research")}>
