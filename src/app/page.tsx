@@ -51,7 +51,7 @@ const ContactView = () => {
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.INITIATE_CONTACT
         </p>
-        <h1 className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
+        <h1 className="text-4xl md:text-6xl font-pixel text-white tracking-widest uppercase">
           Contact
         </h1>
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
