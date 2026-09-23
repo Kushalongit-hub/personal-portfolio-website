@@ -179,8 +179,10 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
         </div>
       </div>
 
-      {/* Monitor Frame - Desktop Only */}
-      <div className="hidden md:block relative bg-[#050505] border-4 border-[#1a1a1a] rounded-3xl overflow-hidden shadow-2xl"
+      <div className="w-full max-w-7xl px-6 relative">
+        <ShaderBackground />
+        {/* Monitor Frame - Desktop Only */}
+        <div className="hidden md:block relative bg-[#050505] border-4 border-[#1a1a1a] rounded-3xl overflow-hidden shadow-2xl"
         style={{
           boxShadow: "0 0 0 2px #262626, 0 25px 50px -12px rgba(0, 0, 0, 0.8)",
           minHeight: "900px",
