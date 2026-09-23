@@ -355,7 +355,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
 
 export default function Home() {
   const [activeView, setActiveView] = useState("hero");
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const isTransitioning = useRef(false);
   const activeViewRef = useRef(activeView);
   const transitionTimeoutRef = useRef<number | undefined>(undefined);
