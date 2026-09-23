@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReticleOverlay from "@/components/ReticleOverlay";
 import TerminalWindow from "@/components/TerminalWindow";
@@ -146,10 +146,10 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
     },
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [cardHeight, setCardHeight] = useState(0);
+  const [cardHeight, setCardHeight] = useState(520);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (cardsContainerRef.current) {
       const cards = cardsContainerRef.current.querySelectorAll('[data-slot-card]');
       let maxHeight = 0;
@@ -333,7 +333,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
 
       {/* Mobile Slot Machine */}
       <div className="md:hidden w-full">
-        <div ref={cardsContainerRef} className="overflow-hidden relative px-6">
+        <div ref={cardsContainerRef} className="overflow-hidden relative px-6" style={{ height: `${cardHeight}px` }}>
           <div
             className="transition-transform duration-500 ease-in-out"
             style={{ transform: `translateY(-${currentIndex * cardHeight}px)` }}
@@ -343,7 +343,6 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
                 key={index}
                 data-slot-card
                 className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
-                style={{ height: cardHeight ? `${cardHeight}px` : 'auto' }}
               >
                 <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
                   <div className="space-y-3 text-sm leading-relaxed">
