@@ -16,7 +16,7 @@ const ResearchView = ({ isDark }: { isDark: boolean }) => {
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.ACCESS_RESEARCH
         </p>
-        <h1 className={`text-5xl md:text-7xl font-pixel tracking-widest uppercase ${isDark ? "text-white" : "text-black"}`}>
+        <h1 className={`text-4xl md:text-6xl font-pixel tracking-widest uppercase ${isDark ? "text-white" : "text-black"}`}>
           Research
         </h1>
         <div className="w-16 h-1 bg-[var(--bg-accent)] mt-8"></div>
@@ -153,7 +153,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
         <p className="text-[12px] tracking-[0.3em] uppercase text-[#525252] font-mono mb-4">
           -- SYSTEM.DIRECTORY.ACCESS
         </p>
-        <h1 className="text-5xl md:text-7xl font-pixel text-white tracking-widest uppercase">
+        <h1 className="text-4xl md:text-6xl font-pixel text-white tracking-widest uppercase">
           Projects
         </h1>
         {/* Accent Line */}
