@@ -351,6 +351,7 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
           </InteractiveBadge>
         </div>
       </div>
+      </div>
     </div>
   );
 };
