@@ -145,6 +145,23 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
       href: "https://github.com/Kushalongit-hub",
     },
   ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardHeight, setCardHeight] = useState(0);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (cardsContainerRef.current) {
+      const cards = cardsContainerRef.current.querySelectorAll('[data-slot-card]');
+      let maxHeight = 0;
+      cards.forEach(card => {
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        if (rect.height > maxHeight) maxHeight = rect.height;
+      });
+      if (maxHeight > 0) {
+        setCardHeight(maxHeight);
+      }
+    }
+  }, []);
 
   return (
     <div className="w-full bg-[#0a0a0a] flex flex-col items-center pt-20 pb-40">
@@ -314,33 +331,63 @@ const ProjectsView = ({ onNavigate }: { onNavigate: (view: string) => void }) =>
         </div>
       </div>
 
-      {/* Mobile Grid */}
-      <div className="md:hidden grid grid-cols-1 gap-6 p-6">
-        {projects.map((project, index) => (
+      {/* Mobile Slot Machine */}
+      <div className="md:hidden w-full">
+        <div ref={cardsContainerRef} className="overflow-hidden relative px-6">
           <div
-            key={index}
-            className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
+            className="transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateY(-${currentIndex * cardHeight}px)` }}
           >
-            <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
-              <div className="space-y-3 text-sm leading-relaxed">
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">
-                    {project.name}
-                  </h3>
-                  <p className="text-xs text-[#525252] font-mono">
-                    {project.tech}
-                  </p>
-                </div>
-                <p>{project.description}</p>
-                <div>
-                  <InteractiveBadge href={project.href} variant="gray">
-                    GITHUB
-                  </InteractiveBadge>
-                </div>
+            {projects.map((project, index) => (
+              <div
+                key={index}
+                data-slot-card
+                className="border border-[#333] bg-[#0a0a0a] rounded-lg overflow-hidden"
+                style={{ height: cardHeight ? `${cardHeight}px` : 'auto' }}
+              >
+                <TerminalWindow title={project.title} subtitle={project.subtitle} variant="windows">
+                  <div className="space-y-3 text-sm leading-relaxed">
+                    <div>
+                      <h3 className="text-lg font-bold text-white mb-1">
+                        {project.name}
+                      </h3>
+                      <p className="text-xs text-[#525252] font-mono">
+                        {project.tech}
+                      </p>
+                    </div>
+                    <p>{project.description}</p>
+                    <div>
+                      <InteractiveBadge href={project.href} variant="gray">
+                        GITHUB
+                      </InteractiveBadge>
+                    </div>
+                  </div>
+                </TerminalWindow>
               </div>
-            </TerminalWindow>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
+            disabled={currentIndex === 0}
+            className="border-2 border-brand-black px-4 py-2 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-brand-gray text-black disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Prev
+          </button>
+          <span className="text-xs font-mono uppercase tracking-widest text-white">
+            {currentIndex + 1} / {projects.length}
+          </span>
+          <button
+            onClick={() => setCurrentIndex(prev => Math.min(projects.length - 1, prev + 1))}
+            disabled={currentIndex === projects.length - 1}
+            className="border-2 border-brand-black px-4 py-2 text-xs font-bold uppercase tracking-widest shadow-brutal transition-transform hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-none bg-[var(--bg-accent)] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Bottom Action */}
